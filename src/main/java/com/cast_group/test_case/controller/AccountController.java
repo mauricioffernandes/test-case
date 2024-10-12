@@ -24,24 +24,6 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 
-    // Creditar valor em uma conta
-    @PostMapping("/{id}/credit")
-    public ResponseEntity<Account> credit(@PathVariable Long id, @RequestParam double amount) {
-        Account account = accountService.creditAccount(id, amount);
-        return ResponseEntity.ok(account);
-    }
-
-    // Debitar valor de uma conta
-    @PostMapping("/{id}/debit")
-    public ResponseEntity<Account> debit(@PathVariable Long id, @RequestParam double amount) {
-        try {
-            Account account = accountService.debitAccount(id, amount);
-            return ResponseEntity.ok(account);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         Account account = accountService.getAccountById(id);
@@ -52,7 +34,6 @@ public class AccountController {
         }
     }
 
-    // Listar todas as contas
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();

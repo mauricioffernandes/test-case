@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/transfer")
+@RequestMapping("/api/accounts/transfer")
 public class TransferController {
 
     @Autowired
