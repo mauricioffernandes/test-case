@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/accounts/transfer")
 public class TransferController {
 
-    @Autowired
-    private TransferService transferService;
+    private final TransferService transferService;
 
-    // Transferir valor entre contas
+    public TransferController(TransferService transferService) {
+        this.transferService = transferService;
+    }
+
     @PostMapping
     public ResponseEntity<String> transfer(@RequestParam Long fromAccountId,
                                            @RequestParam Long toAccountId,

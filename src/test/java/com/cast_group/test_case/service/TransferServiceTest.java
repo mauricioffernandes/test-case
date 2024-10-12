@@ -1,7 +1,7 @@
 package com.cast_group.test_case.service;
 
 import com.cast_group.test_case.exception.SaldoInsuficienteException;
-import com.cast_group.test_case.exception.TransferenciaInvalidaException;
+import com.cast_group.test_case.exception.TransacaoInvalidaException;
 import com.cast_group.test_case.model.Account;
 import com.cast_group.test_case.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,8 +72,8 @@ class TransferServiceTest {
         Account account = new Account(1L, "Nonato Raimundo", 1000.0, 0);
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
 
-        TransferenciaInvalidaException exception = assertThrows(
-                TransferenciaInvalidaException.class,
+        TransacaoInvalidaException exception = assertThrows(
+                TransacaoInvalidaException.class,
                 () -> transferService.transfer(1L, 1L, 100.0)
         );
         assertEquals("A conta de origem e destino devem ser diferentes.", exception.getMessage());
