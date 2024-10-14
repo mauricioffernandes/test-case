@@ -21,12 +21,10 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    @Transactional
     public Account getAccountById(Long id) {
         return accountRepository.findById(id).orElse(null);
     }
 
-    @Transactional
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }

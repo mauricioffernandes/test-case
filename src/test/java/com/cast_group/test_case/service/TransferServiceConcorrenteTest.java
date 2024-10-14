@@ -9,8 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest
 public class TransferServiceConcorrenteTest {
 
@@ -21,8 +19,8 @@ public class TransferServiceConcorrenteTest {
     private final AtomicInteger failureCounter = new AtomicInteger(0);
 
     @Test
-    public void testTransferenciaConcorrente() throws InterruptedException {        
-        int threadCount = 2;
+    public void testTransferenciaConcorrente() throws InterruptedException {
+        int threadCount = 3;
         double amount = 5.0;
 
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -52,6 +50,6 @@ public class TransferServiceConcorrenteTest {
         executor.shutdown();
 
         System.err.println("Teste concluído. Sucessos: " + successCounter.get() + ", Falhas: " + failureCounter.get());
-
     }
 }
+

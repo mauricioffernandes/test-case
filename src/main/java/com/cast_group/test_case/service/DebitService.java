@@ -5,6 +5,8 @@ import com.cast_group.test_case.exception.SaldoInsuficienteException;
 import com.cast_group.test_case.exception.TransacaoInvalidaException;
 import com.cast_group.test_case.model.Account;
 import com.cast_group.test_case.repository.AccountRepository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class DebitService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
     public Account debit(Long accountId, double amount) {
         try {
             Account account = AccountUtils.getAccount(accountId, accountRepository);

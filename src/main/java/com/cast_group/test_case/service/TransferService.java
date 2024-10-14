@@ -8,6 +8,8 @@ import com.cast_group.test_case.repository.AccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -45,12 +47,13 @@ public class TransferService {
                     throw new RuntimeException("Thread interrompida durante a retentativa");
                 }
             } catch (SaldoInsuficienteException | TransacaoInvalidaException e) {
+                logger.error("Erro de negócio: {}", e.getMessage(), e);
                 throw e;
             }
         }
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
     public void executarTransferencia(Long fromAccountId, Long toAccountId, double amount) {
         try {
             Account fromAccount = AccountUtils.getAccount(fromAccountId, accountRepository);
