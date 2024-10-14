@@ -19,7 +19,7 @@ public class DebitService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Account debit(Long accountId, double amount) {
         try {
             Account account = AccountUtils.getAccount(accountId, accountRepository);

@@ -18,7 +18,7 @@ public class CreditService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Account credit(Long accountId, double amount) {
         try {
             Account account = AccountUtils.getAccount(accountId, accountRepository);

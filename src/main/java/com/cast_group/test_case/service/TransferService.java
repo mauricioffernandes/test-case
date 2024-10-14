@@ -53,7 +53,7 @@ public class TransferService {
         }
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void executarTransferencia(Long fromAccountId, Long toAccountId, double amount) {
         try {
             Account fromAccount = AccountUtils.getAccount(fromAccountId, accountRepository);
