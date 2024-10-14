@@ -17,9 +17,9 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ownerName;  // Nome do proprietário da conta
+    private String ownerName;
 
-    private double balance;  // Saldo da conta
+    private double balance;
 
     @Version  // Controle de versão para concorrência otimista
     private int version;

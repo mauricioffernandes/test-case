@@ -2,8 +2,7 @@ package com.cast_group.test_case.service;
 
 import com.cast_group.test_case.model.Account;
 import com.cast_group.test_case.repository.AccountRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

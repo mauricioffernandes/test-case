@@ -1,11 +1,11 @@
 package com.cast_group.test_case.service;
 
+import com.cast_group.test_case.comum.AccountUtils;
 import com.cast_group.test_case.exception.SaldoInsuficienteException;
 import com.cast_group.test_case.exception.TransacaoInvalidaException;
 import com.cast_group.test_case.model.Account;
 import com.cast_group.test_case.repository.AccountRepository;
-import com.cast_group.test_case.util.AccountValidator;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,20 +20,29 @@ public class DebitService {
     @Transactional
     public Account debit(Long accountId, double amount) {
         try {
-            Account account = accountRepository.findById(accountId)
-                    .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + accountId));
+            Account account = AccountUtils.getAccount(accountId, accountRepository);
 
-            AccountValidator.validarTrasacao(account, amount);
+            validaDebit(account, amount);
 
             account.setBalance(account.getBalance() - amount);
             return accountRepository.save(account);
 
         } catch (SaldoInsuficienteException | TransacaoInvalidaException e) {
-            System.err.println("Erro na oparação de debito: " + e.getMessage());
+            System.err.println("Erro na oparação de Credito: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            System.err.println("Erro inesperado durante a trasação: " + e.getMessage());
             throw new RuntimeException("Erro interno na trasação");
+        }
+    }
+
+    private void validaDebit(Account account, double amount) {
+        if (amount <= 0) {
+            throw new TransacaoInvalidaException("O valor deve ser positivo.");
+        }
+        if (account.getBalance() < amount) {
+            throw new SaldoInsuficienteException(
+                    "A conta " + account.getId() + " não possui saldo suficiente."
+            );
         }
     }
 }

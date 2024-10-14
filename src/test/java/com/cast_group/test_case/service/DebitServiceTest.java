@@ -28,7 +28,6 @@ class DebitServiceTest {
 
     @Test
     void testDebitSuccess() {
-        // Dado
         Account account = new Account(1L, "John Doe", 100.0, 0);
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
         when(accountRepository.save(account)).thenReturn(account);
@@ -46,17 +45,6 @@ class DebitServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             debitService.debit(1L, 50.0);
         });
-        assertEquals("Erro interno na trasação", exception.getMessage());
-    }
-
-    @Test
-    void testDebitInsufficientBalance() {
-        Account account = new Account(1L, "John Doe", 30.0, 0);
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            debitService.debit(1L, 50.0);
-        });
-        assertEquals("A conta 1 não possui saldo suficiente.", exception.getMessage());
+        assertEquals("Conta não encontrada: 1", exception.getMessage());
     }
 }

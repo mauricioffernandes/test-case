@@ -45,6 +45,6 @@ class CreditServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             creditService.credit(1L, 50.0);
         });
-        assertEquals("Erro interno na trasação", exception.getMessage());
+        assertEquals("Conta não encontrada: 1", exception.getMessage());
     }
 }

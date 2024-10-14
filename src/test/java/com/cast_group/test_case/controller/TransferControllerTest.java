@@ -38,7 +38,7 @@ class TransferControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Transferência realizada com sucesso.", response.getBody());
-        verify(transferService, times(1)).transfer(fromAccountId, toAccountId, amount);
+        verify(transferService, times(1)).transferWithRetry(fromAccountId, toAccountId, amount);
     }
 
     @Test
@@ -48,13 +48,13 @@ class TransferControllerTest {
         double amount = 100.0;
 
         doThrow(new ConstraintViolationException("Saldo insuficiente", null, "saldo"))
-                .when(transferService).transfer(fromAccountId, toAccountId, amount);
+                .when(transferService).transferWithRetry(fromAccountId, toAccountId, amount);
 
         RuntimeException exception =
                 org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
                         () -> transferController.transfer(fromAccountId, toAccountId, amount));
 
         assertEquals("Database constraint violated: Saldo insuficiente", exception.getMessage());
-        verify(transferService, times(1)).transfer(fromAccountId, toAccountId, amount);
+        verify(transferService, times(1)).transferWithRetry(fromAccountId, toAccountId, amount);
     }
 }
